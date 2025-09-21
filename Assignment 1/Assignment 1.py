@@ -22,7 +22,7 @@ plt.figure(figsize = (10,8))
 sns.heatmap(df.corr(), annot = True, cmap = "coolwarm")
 plt.show()
 
-# Shows relation between the attributes and the quality of the wine.
+# Shows relation between the attributes and their means.
 print(df.describe())
 df.hist(figsize=(12, 12))
 plt.show()
