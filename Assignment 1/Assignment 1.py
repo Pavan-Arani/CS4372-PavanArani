@@ -8,57 +8,59 @@ from sklearn.metrics import mean_squared_error, r2_score
 import statsmodels.api as sm
 
 url = "https://raw.githubusercontent.com/Pavan-Arani/CS4372-PavanArani/refs/heads/main/Assignment%201/winequality-red.csv"
-df = pd.read_csv(url, sep=";")  # file uses semicolons
+df = pd.read_csv(url, sep = ";")  # file uses semicolons
 
-print(df.head())
-print(df.info())
-
-# Check nulls
+# Check for missing values and nulls
 print(df.isnull().sum())
 
 # Features and target
 X = df.drop("quality", axis=1)
 y = df["quality"]
 
-# Summary stats
-print(df.describe())
-
 # Correlation heatmap
-plt.figure(figsize=(10,8))
-sns.heatmap(df.corr(), annot=True, cmap="coolwarm")
+plt.figure(figsize = (10,8))
+sns.heatmap(df.corr(), annot = True, cmap = "coolwarm")
 plt.show()
 
 # Data has no missing values, but features need standardization.
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
+
+# Split data into training and testing sets (80/20)
 X_train, X_test, y_train, y_test = train_test_split(
-    X_scaled, y, test_size=0.2, random_state=42
+    X_scaled, y, test_size = 0.2, random_state = 42
 )
 
 # SGDRegressor Model
 sgd = SGDRegressor(
-    loss="squared_error",
-    penalty="l2",
-    alpha=0.001,
-    max_iter=1000,
-    learning_rate="invscaling",
-    eta0=0.01,
-    random_state=42
+    loss = "squared_error",
+    penalty = "l2",                   # L2 regularization
+    alpha = 0.001,                    # Regularization strength
+    max_iter = 1000,                  # Max iterations
+    learning_rate = "invscaling",     # Learning rate schedule
+    eta0 = 0.01,                      # Initial learning rate
+    random_state = 42
 )
 
 sgd.fit(X_train, y_train)
 y_pred_sgd = sgd.predict(X_test)
 
-print("SGD R²:", r2_score(y_test, y_pred_sgd))
-print("SGD MSE:", mean_squared_error(y_test, y_pred_sgd))
-
+# Output results
+print("SGD Regressor Results")
+print("---------------------")
+print("SGD R^2 Score:", r2_score(y_test, y_pred_sgd))
+print("SGD Mean Squared Error:", mean_squared_error(y_test, y_pred_sgd))
 
 # OLS Model
 X_train_const = sm.add_constant(X_train)
 ols_model = sm.OLS(y_train, X_train_const).fit()
+
+# Output results
+print("\nOLS Regression Results")
+print("----------------------")
 print(ols_model.summary())
 
-
+# Plot predicted vs actual values for SGD
 plt.scatter(y_test, y_pred_sgd, alpha=0.5)
 plt.xlabel("Actual Quality")
 plt.ylabel("Predicted Quality (SGD)")
