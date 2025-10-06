@@ -7,6 +7,8 @@ from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 import statsmodels.api as sm
 
+# test commit for github
+
 url = "https://raw.githubusercontent.com/Pavan-Arani/CS4372-PavanArani/refs/heads/main/Assignment%201/winequality-red.csv"
 df = pd.read_csv(url, sep = ";")  # file uses semicolons
 
