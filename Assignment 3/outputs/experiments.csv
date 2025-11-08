@@ -1,0 +1,2 @@
+data_source,img_size,batch_size,val_fraction,test_fraction,epochs,fine_tune_epochs,learning_rate,fine_tune_lr,final_test_loss,final_test_acc
+.,224,32,0.15,0.15,10,5,0.0001,1e-05,4.851896286010742,0.007175473030656576
